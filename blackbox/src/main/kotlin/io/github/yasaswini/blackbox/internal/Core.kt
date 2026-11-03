@@ -25,6 +25,20 @@ internal class Core private constructor(
     private val config: BlackboxConfig,
     private val initStartUptimeMs: Long,
 ) {
+    // Main-thread cost of each init step in microseconds, also emitted as Perfetto trace sections.
+    private val phases = LinkedHashMap<String, Long>()
+
+    private inline fun <T> phase(name: String, block: () -> T): T {
+        Trace.beginSection("Blackbox.$name")
+        val start = System.nanoTime()
+        try {
+            return block()
+        } finally {
+            phases[name] = (System.nanoTime() - start) / 1_000
+            Trace.endSection()
+        }
+    }
+
     val sessionId: String = Ids.newId()
     private val sessionStartMs = System.currentTimeMillis()
     private val breadcrumbs = Breadcrumbs()
@@ -32,28 +46,29 @@ internal class Core private constructor(
     private val root = File(app.filesDir, "blackbox")
     private val nativeDir = File(root, "native")
     private val stateFile = File(root, "state.txt")
-    private val env = Environment.capture(app)
+    private val env = phase("env") { Environment.capture(app) }
     private val mainThread: Thread = Looper.getMainLooper().thread
 
     @Volatile private var foreground = false
     private var startedActivities = 0 // Main thread only.
 
-    private val store = ReportStore(File(root, "reports"), config.maxStoredReports)
+    private val store = phase("store") { ReportStore(File(root, "reports"), config.maxStoredReports) }
     private val reports = ReportFactory(env, breadcrumbs, { HashMap(customKeys) }, { foreground }, sessionStartMs)
-    private val ioThread = HandlerThread("blackbox-io", Process.THREAD_PRIORITY_BACKGROUND).apply { start() }
-    private val io = Handler(ioThread.looper)
+    private val io = phase("ioThread") { Handler(HandlerThread("blackbox-io", Process.THREAD_PRIORITY_BACKGROUND).apply { start() }.looper) }
     private val uploader = Uploader(config.endpoint, config.apiKey, store) { SystemClock.uptimeMillis() }
 
     val leakWatcher: LeakWatcher? =
         if (config.leakDetection) LeakWatcher(io, config.leakWatchDelayMs) { onLeak(it) } else null
 
-    private val coldStartCandidate: Boolean = isForegroundLaunch()
+    private val coldStartCandidate: Boolean = phase("importance") { isForegroundLaunch() }
     private val startup = StartupTracker(processStartUptimeMs(), coldStartCandidate, initStartUptimeMs)
     private var watchdog: AnrWatchdog? = null
     private var jank: JankMonitor? = null
 
     var initDurationMicros: Long = 0
         private set
+
+    val initPhasesMicros: Map<String, Long> get() = phases
 
     private fun installOnMainThread() {
         CrashHandler(sessionId, reports, store).install()
@@ -290,9 +305,12 @@ internal class Core private constructor(
             try {
                 val start = System.nanoTime()
                 val core = Core(app, config, SystemClock.uptimeMillis())
-                core.installOnMainThread()
+                core.phase("install") { core.installOnMainThread() }
                 core.initDurationMicros = (System.nanoTime() - start) / 1_000
                 core.io.post { core.initInBackground() }
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    Log.d(TAG, "init took ${core.initDurationMicros} us on the main thread: ${core.phases.entries.joinToString { "${it.key} ${it.value} us" }}")
+                }
                 return core
             } finally {
                 Trace.endSection()

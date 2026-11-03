@@ -29,6 +29,8 @@ public object Blackbox {
     @JvmStatic
     public val initDurationMicros: Long get() = core?.initDurationMicros ?: 0
 
+    internal val initPhasesMicros: Map<String, Long> get() = core?.initPhasesMicros ?: emptyMap()
+
     /** Identifier of the current app session (one per process). */
     @JvmStatic
     public val sessionId: String? get() = core?.sessionId

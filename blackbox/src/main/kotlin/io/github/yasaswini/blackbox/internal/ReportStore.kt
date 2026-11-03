@@ -14,12 +14,10 @@ internal class ReportStore(
     private val maxFiles: Int = 64,
     private val maxBytes: Long = 4L * 1024 * 1024,
 ) {
-    init {
-        dir.mkdirs()
-    }
-
+    // The directory is created on first write, so constructing the store does no disk I/O.
     @Synchronized
     fun write(report: Report) {
+        if (!dir.isDirectory) dir.mkdirs()
         val bytes = report.json.toByteArray(Charsets.UTF_8)
         val tmp = File(dir, "${report.id}.tmp")
         val dest = File(dir, fileName(report))

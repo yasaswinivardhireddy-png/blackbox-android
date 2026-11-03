@@ -40,6 +40,8 @@ echo "ANR timeout multiplier: $(adb shell getprop ro.hw_timeout_multiplier | tr 
 adb reverse tcp:$PORT tcp:$PORT
 # Without error dialogs, the system kills an ANRing or crashing app instead of waiting for a tap.
 adb shell settings put global hide_error_dialogs 1
+# Makes the SDK log its per-phase init cost on every launch.
+adb shell setprop log.tag.Blackbox DEBUG
 adb install -r "$APK" >/dev/null
 adb logcat -c
 adb logcat -v time >"$OUT/logcat.txt" 2>&1 &
@@ -102,6 +104,8 @@ grep -o 'Blackbox.init took [0-9]* us' "$OUT/logcat.txt" | awk '{print $3}' | so
 if [[ -s $OUT/init-us.txt ]]; then
   awk '{a[NR]=$1} END {printf "launches=%d min=%d p50=%d p90=%d max=%d (us)\n", NR, a[1], a[int((NR+1)/2)], a[int(NR*0.9+0.5)], a[NR]}' "$OUT/init-us.txt" | tee "$OUT/init-summary.txt"
 fi
+grep -o 'init took [0-9]* us on the main thread: .*' "$OUT/logcat.txt" >"$OUT/init-phases.txt" || true
+head -n 3 "$OUT/init-phases.txt"
 
 log "Perfetto: Blackbox trace sections during cold start"
 if [[ -s $OUT/startup.perfetto-trace ]]; then
