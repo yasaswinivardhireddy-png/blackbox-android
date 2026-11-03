@@ -1,0 +1,16 @@
+.gradle/
+.kotlin/
+build/
+local.properties
+*.iml
+.idea/
+.cxx/
+captures/
+node_modules/
+.data/
+*.db
+*.db-shm
+*.db-wal
+e2e-out/
+*.log
+.DS_Store

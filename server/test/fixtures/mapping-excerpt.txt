@@ -1,0 +1,256 @@
+# compiler: R8
+# compiler_version: 9.5.28
+# min_api: 24
+# {"id":"com.android.tools.r8.mapping","version":"2.2"}
+# pg_map_id: 20f72b7418b2851e8c3c9b8e02f6a9ac7508b34355f4ae0a8fe4d5f2fe0a31e9
+# pg_map_hash: SHA-256 20f72b7418b2851e8c3c9b8e02f6a9ac7508b34355f4ae0a8fe4d5f2fe0a31e9
+io.github.yasaswini.blackbox.internal.Report -> h6:
+# {"id":"sourceFile","fileName":"Reports.kt"}
+    java.lang.String id -> a
+    java.lang.String type -> b
+    long createdAtMs -> c
+    java.lang.String json -> d
+    1:12:void <init>(java.lang.String,java.lang.String,long,java.lang.String):5:5 -> <init>
+io.github.yasaswini.blackbox.internal.ReportStoreKt -> R8$$REMOVED$$CLASS$$3:
+# {"id":"sourceFile","fileName":"ReportStore.kt"}
+io.github.yasaswini.blackbox.sample.CheckoutService -> R8$$REMOVED$$CLASS$$5:
+# {"id":"sourceFile","fileName":"Scenarios.kt"}
+io.github.yasaswini.blackbox.sample.InventoryRepository -> k4:
+# {"id":"sourceFile","fileName":"Scenarios.kt"}
+    byte InventoryRepository.$r8$classId -> a
+      # {"id":"com.android.tools.r8.synthesized"}
+    java.lang.Object lock -> b
+    6:8:void <init>():58:58 -> <init>
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(B)V"}
+    9:16:void <init>():59:59 -> <init>
+    17:19:void io.github.yasaswini.blackbox.sample.OrderFeed.<init>():90:90 -> <init>
+    20:28:void io.github.yasaswini.blackbox.sample.OrderFeed.<init>():91:91 -> <init>
+    29:30:void io.github.yasaswini.blackbox.internal.ReportStore.<init>(java.io.File,int,long):12:13 -> <init>
+    29:30:void io.github.yasaswini.blackbox.internal.ReportStore.<init>(java.io.File,int,long,int,kotlin.jvm.internal.DefaultConstructorMarker):12 -> <init>
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/io/File;)V"}
+    31:31:void io.github.yasaswini.blackbox.internal.ReportStore.<init>(java.io.File,int,long):18:18 -> <init>
+    31:31:void io.github.yasaswini.blackbox.internal.ReportStore.<init>(java.io.File,int,long,int,kotlin.jvm.internal.DefaultConstructorMarker):12 -> <init>
+    32:32:void kotlinx.coroutines.internal.Symbol.<init>(java.lang.String):10:10 -> <init>
+    2:20:void io.github.yasaswini.blackbox.internal.ReportStore.delete(java.util.Collection):45:45 -> a
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/util/ArrayList;)V"}
+    21:26:void io.github.yasaswini.blackbox.internal.ReportStore.delete(java.util.Collection):46:46 -> a
+    2:16:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():39:39 -> b
+    17:19:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():84:84 -> b
+    20:22:void io.github.yasaswini.blackbox.internal.ReportStore$pending$$inlined$sortedBy$1.<init>():0:0 -> b
+    20:22:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():84 -> b
+    23:25:java.lang.Object[] kotlin.collections.ArraysKt___ArraysKt.sortedArrayWith(java.lang.Object[],java.util.Comparator):6559:6559 -> b
+    23:25:java.util.List kotlin.collections.ArraysKt___ArraysKt.sortedWith(java.lang.Object[],java.util.Comparator):6843 -> b
+    23:25:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():84 -> b
+    26:30:java.lang.Object[] kotlin.collections.ArraysKt___ArraysKt.sortedArrayWith(java.lang.Object[],java.util.Comparator):6560:6560 -> b
+    26:30:java.util.List kotlin.collections.ArraysKt___ArraysKt.sortedWith(java.lang.Object[],java.util.Comparator):6843 -> b
+    26:30:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():84 -> b
+    31:36:void kotlin.collections.ArraysKt___ArraysJvmKt.sortWith(java.lang.Object[],java.util.Comparator):2188:2188 -> b
+    31:36:java.lang.Object[] kotlin.collections.ArraysKt___ArraysKt.sortedArrayWith(java.lang.Object[],java.util.Comparator):6560 -> b
+    31:36:java.util.List kotlin.collections.ArraysKt___ArraysKt.sortedWith(java.lang.Object[],java.util.Comparator):6843 -> b
+    31:36:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():84 -> b
+    37:40:java.util.List kotlin.collections.ArraysUtilJVM.asList(java.lang.Object[]):13:13 -> b
+    37:40:java.util.List kotlin.collections.ArraysKt___ArraysJvmKt.asList(java.lang.Object[]):133 -> b
+    37:40:java.util.List kotlin.collections.ArraysKt___ArraysKt.sortedWith(java.lang.Object[],java.util.Comparator):6843 -> b
+    37:40:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():84 -> b
+    41:44:java.util.List kotlin.collections.ArraysKt___ArraysJvmKt.asList(java.lang.Object[]):133:133 -> b
+    41:44:java.util.List kotlin.collections.ArraysKt___ArraysKt.sortedWith(java.lang.Object[],java.util.Comparator):6843 -> b
+    41:44:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():84 -> b
+    45:52:java.util.List io.github.yasaswini.blackbox.internal.ReportStore.pending():39:39 -> b
+    1:4:void io.github.yasaswini.blackbox.internal.ReportStore.trim():50:50 -> c
+    5:8:void io.github.yasaswini.blackbox.internal.ReportStore.trim():51:51 -> c
+    9:43:void io.github.yasaswini.blackbox.internal.ReportStore.trim():52:52 -> c
+    44:64:void io.github.yasaswini.blackbox.internal.ReportStore.trim():54:54 -> c
+    65:69:java.util.Comparator kotlin.comparisons.ComparisonsKt__ComparisonsKt.compareBy(kotlin.jvm.functions.Function1[]):91:91 -> c
+    65:69:void io.github.yasaswini.blackbox.internal.ReportStore.trim():54 -> c
+    70:73:void io.github.yasaswini.blackbox.internal.ReportStore.trim():54:54 -> c
+    74:95:void io.github.yasaswini.blackbox.internal.ReportStore.trim():55:55 -> c
+    96:102:void io.github.yasaswini.blackbox.internal.ReportStore.trim():57:57 -> c
+    103:107:void io.github.yasaswini.blackbox.internal.ReportStore.trim():59:59 -> c
+    9:10:java.lang.String io.github.yasaswini.blackbox.internal.Report.getJson():5:5 -> d
+    9:10:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):23 -> d
+      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lh6;)V"}
+    11:19:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):23:23 -> d
+    20:25:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):24:24 -> d
+    26:27:java.lang.String io.github.yasaswini.blackbox.internal.Report.getId():5:5 -> d
+    26:27:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):24 -> d
+    28:34:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):24:24 -> d
+    35:47:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):25:25 -> d
+    48:52:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):26:26 -> d
+    53:55:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):27:27 -> d
+    56:62:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):28:28 -> d
+    63:65:void kotlin.io.CloseableKt.closeFinally(java.io.Closeable,java.lang.Throwable):46:46 -> d
+    63:65:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):26 -> d
+    66:73:boolean io.github.yasaswini.blackbox.internal.ReportStoreKt.replaceFile(java.io.File,java.io.File):79:79 -> d
+    66:73:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):30 -> d
+    74:76:boolean io.github.yasaswini.blackbox.internal.ReportStoreKt.replaceFile(java.io.File,java.io.File):80:80 -> d
+    74:76:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):30 -> d
+    77:82:boolean io.github.yasaswini.blackbox.internal.ReportStoreKt.replaceFile(java.io.File,java.io.File):81:81 -> d
+    77:82:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):30 -> d
+    83:85:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):34:34 -> d
+    86:87:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):35:35 -> d
+    88:90:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):31:31 -> d
+    91:92:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):32:32 -> d
+    93:94:java.lang.String io.github.yasaswini.blackbox.internal.Report.getId():5:5 -> d
+    93:94:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):32 -> d
+    95:103:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):32:32 -> d
+    104:113:void io.github.yasaswini.blackbox.internal.ReportStore.write(io.github.yasaswini.blackbox.internal.Report):26:26 -> d
+    11:34:java.lang.String kotlinx.coroutines.internal.Symbol.toString():11:11 -> toString
+io.github.yasaswini.blackbox.sample.InventoryRepository$$ExternalSyntheticLambda0 -> j4:
+# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
+# {"id":"com.android.tools.r8.synthesized"}
+    byte InventoryRepository$$ExternalSyntheticLambda0.$r8$classId -> a
+      # {"id":"com.android.tools.r8.synthesized"}
+    io.github.yasaswini.blackbox.sample.InventoryRepository io.github.yasaswini.blackbox.sample.InventoryRepository$$InternalSyntheticLambda$3$25b859c66f8c15c98e38bd883ffee346539f1dbb6bbfca1c29651349b2888a36$0.f$0 -> b
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Ljava/lang/Object;"}
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:1:void InventoryRepository$$ExternalSyntheticLambda0.<init>(java.lang.Object,byte):0:0 -> <init>
+      # {"id":"com.android.tools.r8.synthesized"}
+    13:18:kotlin.Unit io.github.yasaswini.blackbox.sample.JankActivity.onCreate$lambda$0(io.github.yasaswini.blackbox.sample.JankActivity):16:16 -> a
+    13:18:java.lang.Object InventoryRepository$$ExternalSyntheticLambda0.invoke():0 -> a
+      # {"id":"com.android.tools.r8.synthesized"}
+    19:20:java.lang.Object InventoryRepository$$ExternalSyntheticLambda0.invoke():0:0 -> a
+    21:25:kotlin.Unit io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount$lambda$1(io.github.yasaswini.blackbox.sample.InventoryRepository):63:63 -> a
+    21:25:java.lang.Object InventoryRepository$$ExternalSyntheticLambda0.invoke():0 -> a
+    26:28:kotlin.Unit io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount$lambda$1(io.github.yasaswini.blackbox.sample.InventoryRepository):65:65 -> a
+    26:28:java.lang.Object InventoryRepository$$ExternalSyntheticLambda0.invoke():0 -> a
+    29:29:kotlin.Unit io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount$lambda$1(io.github.yasaswini.blackbox.sample.InventoryRepository):63:63 -> a
+    29:29:java.lang.Object InventoryRepository$$ExternalSyntheticLambda0.invoke():0 -> a
+    30:33:kotlin.Unit io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount$lambda$1(io.github.yasaswini.blackbox.sample.InventoryRepository):67:67 -> a
+    30:33:java.lang.Object InventoryRepository$$ExternalSyntheticLambda0.invoke():0 -> a
+    34:36:kotlin.Unit io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount$lambda$1(io.github.yasaswini.blackbox.sample.InventoryRepository):63:63 -> a
+    34:36:java.lang.Object InventoryRepository$$ExternalSyntheticLambda0.invoke():0 -> a
+io.github.yasaswini.blackbox.sample.PaymentClient -> R8$$REMOVED$$CLASS$$7:
+# {"id":"sourceFile","fileName":"Scenarios.kt"}
+io.github.yasaswini.blackbox.sample.Scenarios -> m6:
+# {"id":"sourceFile","fileName":"Scenarios.kt"}
+    java.util.List all -> a
+    1:11:void <clinit>():20:20 -> <clinit>
+    12:22:void <clinit>():21:21 -> <clinit>
+    23:33:void <clinit>():22:22 -> <clinit>
+    34:44:void <clinit>():23:23 -> <clinit>
+    45:55:void <clinit>():24:24 -> <clinit>
+    56:66:void <clinit>():25:25 -> <clinit>
+    67:77:void <clinit>():26:26 -> <clinit>
+    78:88:void <clinit>():27:27 -> <clinit>
+    89:99:void <clinit>():28:28 -> <clinit>
+    100:114:void <clinit>():29:29 -> <clinit>
+    115:118:java.util.List kotlin.collections.ArraysUtilJVM.asList(java.lang.Object[]):13:13 -> <clinit>
+    115:118:java.util.List kotlin.collections.ArraysKt___ArraysJvmKt.asList(java.lang.Object[]):133 -> <clinit>
+    115:118:java.util.List kotlin.collections.CollectionsKt__CollectionsKt.listOf(java.lang.Object[]):81 -> <clinit>
+    115:118:void <clinit>():19 -> <clinit>
+    119:121:java.util.List kotlin.collections.ArraysKt___ArraysJvmKt.asList(java.lang.Object[]):133:133 -> <clinit>
+    119:121:java.util.List kotlin.collections.CollectionsKt__CollectionsKt.listOf(java.lang.Object[]):81 -> <clinit>
+    119:121:void <clinit>():19 -> <clinit>
+    122:124:void <clinit>():19:19 -> <clinit>
+    1:8:void run(android.app.Activity,java.lang.String):33:33 -> a
+    9:15:void io.github.yasaswini.blackbox.Blackbox.breadcrumb(java.lang.String,java.lang.String):40:40 -> a
+    9:15:void run(android.app.Activity,java.lang.String):33 -> a
+    16:33:void run(android.app.Activity,java.lang.String):34:34 -> a
+    34:41:java.lang.String io.github.yasaswini.blackbox.sample.CheckoutService.submit(io.github.yasaswini.blackbox.sample.Cart):53:53 -> a
+    34:41:void run(android.app.Activity,java.lang.String):35 -> a
+    42:49:void run(android.app.Activity,java.lang.String):34:34 -> a
+    50:53:void io.github.yasaswini.blackbox.sample.PaymentClient.chargeAndReport():125:125 -> a
+    50:53:void run(android.app.Activity,java.lang.String):44 -> a
+    54:56:void io.github.yasaswini.blackbox.sample.PaymentDeclinedException.<init>(java.lang.String):120:120 -> a
+    54:56:void io.github.yasaswini.blackbox.sample.PaymentClient.chargeAndReport():125 -> a
+    54:56:void run(android.app.Activity,java.lang.String):44 -> a
+    57:58:void io.github.yasaswini.blackbox.sample.PaymentClient.chargeAndReport():125:125 -> a
+    57:58:void run(android.app.Activity,java.lang.String):44 -> a
+    59:62:void io.github.yasaswini.blackbox.Blackbox.recordNonFatal(java.lang.Throwable):52:52 -> a
+    59:62:void io.github.yasaswini.blackbox.sample.PaymentClient.chargeAndReport():127 -> a
+    59:62:void run(android.app.Activity,java.lang.String):44 -> a
+    63:66:void io.github.yasaswini.blackbox.internal.Core.recordNonFatal(java.lang.Throwable):146:146 -> a
+    63:66:void io.github.yasaswini.blackbox.Blackbox.recordNonFatal(java.lang.Throwable):52 -> a
+    63:66:void io.github.yasaswini.blackbox.sample.PaymentClient.chargeAndReport():127 -> a
+    63:66:void run(android.app.Activity,java.lang.String):44 -> a
+    67:78:void io.github.yasaswini.blackbox.internal.Core.recordNonFatal(java.lang.Throwable):147:147 -> a
+    67:78:void io.github.yasaswini.blackbox.Blackbox.recordNonFatal(java.lang.Throwable):52 -> a
+    67:78:void io.github.yasaswini.blackbox.sample.PaymentClient.chargeAndReport():127 -> a
+    67:78:void run(android.app.Activity,java.lang.String):44 -> a
+    79:86:void run(android.app.Activity,java.lang.String):34:34 -> a
+    87:92:void run(android.app.Activity,java.lang.String):40:40 -> a
+    93:94:kotlinx.coroutines.CoroutineDispatcher kotlinx.coroutines.Dispatchers.getDefault():16:16 -> a
+    93:94:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():94 -> a
+    93:94:void run(android.app.Activity,java.lang.String):40 -> a
+    95:104:kotlinx.coroutines.CoroutineScope kotlinx.coroutines.CoroutineScopeKt.CoroutineScope(kotlin.coroutines.CoroutineContext):1092:1092 -> a
+    95:104:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():94 -> a
+    95:104:void run(android.app.Activity,java.lang.String):40 -> a
+    105:109:kotlinx.coroutines.CompletableJob kotlinx.coroutines.JobKt__JobKt.Job(kotlinx.coroutines.Job):391:391 -> a
+    105:109:kotlinx.coroutines.CompletableJob kotlinx.coroutines.JobKt.Job(kotlinx.coroutines.Job):1 -> a
+    105:109:kotlinx.coroutines.CompletableJob kotlinx.coroutines.JobKt__JobKt.Job$default(kotlinx.coroutines.Job,int,java.lang.Object):391 -> a
+    105:109:kotlinx.coroutines.CompletableJob kotlinx.coroutines.JobKt.Job$default(kotlinx.coroutines.Job,int,java.lang.Object):1 -> a
+    105:109:kotlinx.coroutines.CoroutineScope kotlinx.coroutines.CoroutineScopeKt.CoroutineScope(kotlin.coroutines.CoroutineContext):1092 -> a
+    105:109:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():94 -> a
+    105:109:void run(android.app.Activity,java.lang.String):40 -> a
+    110:113:kotlin.coroutines.CoroutineContext kotlin.coroutines.AbstractCoroutineContextElement.plus(kotlin.coroutines.CoroutineContext):16:16 -> a
+    110:113:kotlinx.coroutines.CoroutineScope kotlinx.coroutines.CoroutineScopeKt.CoroutineScope(kotlin.coroutines.CoroutineContext):1092 -> a
+    110:113:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():94 -> a
+    110:113:void run(android.app.Activity,java.lang.String):40 -> a
+    114:116:kotlinx.coroutines.CoroutineScope kotlinx.coroutines.CoroutineScopeKt.CoroutineScope(kotlin.coroutines.CoroutineContext):1092:1092 -> a
+    114:116:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():94 -> a
+    114:116:void run(android.app.Activity,java.lang.String):40 -> a
+    117:122:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():95:95 -> a
+    117:122:void run(android.app.Activity,java.lang.String):40 -> a
+    123:125:kotlinx.coroutines.Job kotlinx.coroutines.BuildersKt.launch$default(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function2,int,java.lang.Object):1:1 -> a
+    123:125:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():95 -> a
+    123:125:void run(android.app.Activity,java.lang.String):40 -> a
+    126:130:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():102:102 -> a
+    126:130:void run(android.app.Activity,java.lang.String):40 -> a
+    131:134:kotlinx.coroutines.Job kotlinx.coroutines.BuildersKt.launch$default(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function2,int,java.lang.Object):1:1 -> a
+    131:134:void io.github.yasaswini.blackbox.sample.OrderFeed.startRacingCoroutines():102 -> a
+    131:134:void run(android.app.Activity,java.lang.String):40 -> a
+    135:142:void run(android.app.Activity,java.lang.String):34:34 -> a
+    143:153:void run(android.app.Activity,java.lang.String):43:43 -> a
+    154:161:void run(android.app.Activity,java.lang.String):34:34 -> a
+    162:172:void run(android.app.Activity,java.lang.String):42:42 -> a
+    173:180:void run(android.app.Activity,java.lang.String):34:34 -> a
+    181:187:void io.github.yasaswini.blackbox.sample.ImageCache.<init>():113:113 -> a
+    181:187:void run(android.app.Activity,java.lang.String):41 -> a
+    188:193:void io.github.yasaswini.blackbox.sample.ImageCache.fillForever():116:116 -> a
+    188:193:void run(android.app.Activity,java.lang.String):41 -> a
+    194:201:void run(android.app.Activity,java.lang.String):34:34 -> a
+    202:206:void run(android.app.Activity,java.lang.String):38:38 -> a
+    207:213:int io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount():62:62 -> a
+    207:213:void run(android.app.Activity,java.lang.String):38 -> a
+    214:218:java.lang.Thread kotlin.concurrent.ThreadsKt.thread(boolean,boolean,java.lang.ClassLoader,java.lang.String,int,kotlin.jvm.functions.Function0):28:28 -> a
+    214:218:java.lang.Thread kotlin.concurrent.ThreadsKt.thread$default(boolean,boolean,java.lang.ClassLoader,java.lang.String,int,kotlin.jvm.functions.Function0,int,java.lang.Object):20 -> a
+    214:218:int io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount():62 -> a
+    214:218:void run(android.app.Activity,java.lang.String):38 -> a
+    219:221:java.lang.Thread kotlin.concurrent.ThreadsKt.thread(boolean,boolean,java.lang.ClassLoader,java.lang.String,int,kotlin.jvm.functions.Function0):38:38 -> a
+    219:221:java.lang.Thread kotlin.concurrent.ThreadsKt.thread$default(boolean,boolean,java.lang.ClassLoader,java.lang.String,int,kotlin.jvm.functions.Function0,int,java.lang.Object):20 -> a
+    219:221:int io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount():62 -> a
+    219:221:void run(android.app.Activity,java.lang.String):38 -> a
+    222:226:java.lang.Thread kotlin.concurrent.ThreadsKt.thread(boolean,boolean,java.lang.ClassLoader,java.lang.String,int,kotlin.jvm.functions.Function0):42:42 -> a
+    222:226:java.lang.Thread kotlin.concurrent.ThreadsKt.thread$default(boolean,boolean,java.lang.ClassLoader,java.lang.String,int,kotlin.jvm.functions.Function0,int,java.lang.Object):20 -> a
+    222:226:int io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount():62 -> a
+    222:226:void run(android.app.Activity,java.lang.String):38 -> a
+    227:229:int io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount():68:68 -> a
+    227:229:void run(android.app.Activity,java.lang.String):38 -> a
+    230:234:int io.github.yasaswini.blackbox.sample.InventoryRepository.countOnMainThread():72:72 -> a
+    230:234:int io.github.yasaswini.blackbox.sample.InventoryRepository.refreshThenCount():69 -> a
+    230:234:void run(android.app.Activity,java.lang.String):38 -> a
+    235:244:void run(android.app.Activity,java.lang.String):34:34 -> a
+    245:255:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():77:77 -> a
+    245:255:void run(android.app.Activity,java.lang.String):39 -> a
+    256:266:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():78:78 -> a
+    256:266:void run(android.app.Activity,java.lang.String):39 -> a
+    267:273:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():79:79 -> a
+    267:273:void run(android.app.Activity,java.lang.String):39 -> a
+    274:281:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():81:81 -> a
+    274:281:void run(android.app.Activity,java.lang.String):39 -> a
+    282:291:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():82:82 -> a
+    282:291:void run(android.app.Activity,java.lang.String):39 -> a
+    292:297:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():83:83 -> a
+    292:297:void run(android.app.Activity,java.lang.String):39 -> a
+    298:304:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():84:84 -> a
+    298:304:void run(android.app.Activity,java.lang.String):39 -> a
+    305:309:void kotlin.io.CloseableKt.closeFinally(java.io.Closeable,java.lang.Throwable):46:46 -> a
+    305:309:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():82 -> a
+    305:309:void run(android.app.Activity,java.lang.String):39 -> a
+    310:315:void io.github.yasaswini.blackbox.sample.ReceiptArchive.saveAllOnMainThread():82:82 -> a
+    310:315:void run(android.app.Activity,java.lang.String):39 -> a
+    316:323:void run(android.app.Activity,java.lang.String):34:34 -> a
+    324:327:void run(android.app.Activity,java.lang.String):36:36 -> a
+    328:336:void run(android.app.Activity,java.lang.String):34:34 -> a
+    337:342:void run(android.app.Activity,java.lang.String):37:37 -> a

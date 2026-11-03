@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blackbox: Android stability</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>Blackbox <span class="sub">Android stability</span></h1>
+    <nav aria-label="Issue kinds" id="kinds"></nav>
+  </header>
+  <main>
+    <section aria-labelledby="health-title">
+      <h2 id="health-title">Fleet health</h2>
+      <div id="cards" class="cards"></div>
+    </section>
+    <div class="columns">
+      <section aria-labelledby="issues-title">
+        <h2 id="issues-title">Issues <span class="hint">by affected sessions</span></h2>
+        <table id="issues">
+          <thead><tr><th scope="col">Kind</th><th scope="col">Issue</th><th scope="col">Root cause</th><th scope="col" class="num">Sessions</th><th scope="col" class="num">Events</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+      <section aria-labelledby="detail-title" id="detail-panel">
+        <h2 id="detail-title">Select an issue</h2>
+        <div id="detail"></div>
+      </section>
+    </div>
+    <div class="columns">
+      <section aria-labelledby="hotspots-title">
+        <h2 id="hotspots-title">Device and OS hotspots</h2>
+        <div id="hotspots"></div>
+      </section>
+      <section aria-labelledby="jank-title">
+        <h2 id="jank-title">Rendering by screen</h2>
+        <table id="jank">
+          <thead><tr><th scope="col">Screen</th><th scope="col" class="num">Frames</th><th scope="col" class="num">Slow</th><th scope="col" class="num">Frozen</th><th scope="col" class="num">Worst</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

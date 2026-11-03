@@ -1,0 +1,23 @@
+{
+  "name": "blackbox-server",
+  "version": "1.0.0",
+  "description": "Ingestion, symbolication, retrace, grouping and root-cause triage for Blackbox Android reports. Zero dependencies: TypeScript on Node.js 22 with built-in SQLite.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/main.ts",
+    "test": "node --disable-warning=ExperimentalWarning --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "fleet": "node --disable-warning=ExperimentalWarning scripts/fleet-sim.ts",
+    "loadtest": "node --disable-warning=ExperimentalWarning scripts/loadtest.ts",
+    "e2e:verify": "node --disable-warning=ExperimentalWarning scripts/e2e-verify.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "~6.0.3"
+  }
+}

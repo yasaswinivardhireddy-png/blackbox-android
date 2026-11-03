@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sdk:
+    name: SDK - unit tests, release build, size
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Unit tests and release builds
+        run: ./gradlew :blackbox:testDebugUnitTest :blackbox:assembleRelease :sample:assembleRelease --stacktrace
+      - name: Size report
+        run: ./scripts/size-report.sh | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sdk-reports
+          path: |
+            blackbox/build/reports/tests
+            blackbox/build/outputs/aar
+            sample/build/outputs/mapping/release/mapping.txt
+
+  server:
+    name: Server - tests, type check, fleet simulation, load test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - name: Tests (llvm-symbolizer from the runner's Android NDK)
+        run: npm test
+      - name: Fleet simulation
+        run: npm run fleet --silent -- --out fleet.json | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Ingestion load test
+        run: npm run loadtest --silent -- --seconds 10 --out loadtest.json | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: server-results
+          path: |
+            server/fleet.json
+            server/loadtest.json
+
+  e2e:
+    name: Emulator end-to-end - API 34
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build the release app and the instrumented tests
+        run: ./gradlew :sample:assembleRelease :blackbox:assembleDebugAndroidTest --stacktrace
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Instrumented tests and scenarios on the emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: ./gradlew :blackbox:connectedDebugAndroidTest --stacktrace && ./scripts/e2e.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results
+          path: |
+            e2e-out
+            !e2e-out/trace_processor
+            blackbox/build/reports/androidTests
+            blackbox/build/outputs/androidTest-results
