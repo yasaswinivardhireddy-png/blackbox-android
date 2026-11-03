@@ -139,7 +139,7 @@ class DeviceDiagnosticsTest {
         val phases = Blackbox.initPhasesMicros
         Log.i("BlackboxTest", "Blackbox.init took $micros us on the main thread: $phases")
         assertTrue(Blackbox.isInitialized)
-        assertEquals(listOf("env", "store", "ioThread", "importance", "install"), phases.keys.toList())
+        assertEquals(listOf("env", "store", "ioThread", "install"), phases.keys.toList())
         // A cold, debuggable test process also pays for class loading and verification, so this
         // only catches gross regressions; scripts/e2e.sh measures the release app.
         assertTrue("init took $micros us", micros in 1..2_000_000)

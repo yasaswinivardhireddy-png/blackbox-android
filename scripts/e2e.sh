@@ -62,9 +62,7 @@ adb shell am force-stop "$PKG"
 adb shell perfetto --background -o /data/misc/perfetto-traces/startup.perfetto-trace -t 12s -b 64mb -a "$PKG" am wm view dalvik sched gfx >/dev/null || echo "perfetto unavailable"
 sleep 2
 adb shell am start -W -n "$PKG/.MainActivity" | tee "$OUT/cold-start.txt"
-sleep 3
-adb exec-out screencap -p >"$OUT/screenshots/sample-app.png"
-sleep 9
+sleep 12
 adb pull /data/misc/perfetto-traces/startup.perfetto-trace "$OUT/startup.perfetto-trace" >/dev/null || true
 home
 sleep 3
@@ -98,6 +96,15 @@ run jank 7
 run leak 7
 run non_fatal 3
 deliver
+
+log "Sample app screenshot"
+adb shell am force-stop "$PKG"
+adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS >/dev/null 2>&1 || true
+adb shell am start -W -n "$PKG/.MainActivity" >/dev/null
+sleep 4
+adb exec-out screencap -p >"$OUT/screenshots/sample-app.png"
+home
+sleep 4
 
 log "SDK init time on the main thread (from logcat)"
 grep -o 'Blackbox.init took [0-9]* us' "$OUT/logcat.txt" | awk '{print $3}' | sort -n >"$OUT/init-us.txt" || true

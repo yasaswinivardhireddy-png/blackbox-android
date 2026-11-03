@@ -50,6 +50,9 @@ export class Mapping {
   // Compiler-generated methods (lambda bridges, outlines), keyed by class.method(params).
   private synthesizedMethods = new Set<string>();
   private defaultExt: 'kt' | 'java' = 'java';
+  // Source file of any surviving nested or lambda class, by outer class: R8 drops the entries of
+  // merged and inlined classes, but their siblings still say which file the outer class is in.
+  private fileByOuter = new Map<string, string>();
 
   static parse(text: string): Mapping {
     const mapping = new Mapping();
@@ -120,6 +123,10 @@ export class Mapping {
     }
     const files = [...mapping.byObf.values()].map((c) => c.sourceFile ?? '');
     mapping.defaultExt = files.filter((f) => f.endsWith('.kt')).length >= files.filter((f) => f.endsWith('.java')).length ? 'kt' : 'java';
+    for (const c of mapping.byObf.values()) {
+      const outer = c.original.split('$')[0]!;
+      if (c.sourceFile && /\.(kt|java)$/.test(c.sourceFile) && !mapping.fileByOuter.has(outer)) mapping.fileByOuter.set(outer, c.sourceFile);
+    }
     return mapping;
   }
 
@@ -134,7 +141,7 @@ export class Mapping {
 
   private sourceFileOf(className: string): string | null {
     const outer = className.split('$')[0]!;
-    return this.byOriginal.get(className)?.sourceFile ?? this.byOriginal.get(outer)?.sourceFile ?? null;
+    return this.byOriginal.get(className)?.sourceFile ?? this.byOriginal.get(outer)?.sourceFile ?? this.fileByOuter.get(outer) ?? null;
   }
 
   // R8 records no source file for classes that were fully inlined and removed; like R8's retrace,

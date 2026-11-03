@@ -55,7 +55,7 @@ class FrameStatsTest {
 class StartupTrackerTest {
     @Test
     fun measuresColdStartFromProcessStartToFirstFrame() {
-        val tracker = StartupTracker(processStartUptimeMs = 1_000, coldStartCandidate = true, sdkInitStartUptimeMs = 1_150)
+        val tracker = StartupTracker(processStartUptimeMs = 1_000, launchedForActivity = { true }, sdkInitStartUptimeMs = 1_150)
         tracker.onActivityCreated("Main", hasSavedState = false, appInBackground = true, nowUptimeMs = 1_300)
         assertNull(tracker.onFirstFrame("Other", 1_500))
         val record = tracker.onFirstFrame("Main", 1_640)!!
@@ -67,7 +67,7 @@ class StartupTrackerTest {
 
     @Test
     fun treatsBackgroundStartedProcessesAsWarm() {
-        val tracker = StartupTracker(processStartUptimeMs = 0, coldStartCandidate = false, sdkInitStartUptimeMs = 10)
+        val tracker = StartupTracker(processStartUptimeMs = 0, launchedForActivity = { false }, sdkInitStartUptimeMs = 10)
         tracker.onActivityCreated("Main", hasSavedState = false, appInBackground = true, nowUptimeMs = 60_000)
         val record = tracker.onFirstFrame("Main", 60_250)!!
         assertEquals("warm", record.type)
@@ -76,7 +76,7 @@ class StartupTrackerTest {
 
     @Test
     fun recordsWarmStartsWhenReturningFromBackground() {
-        val tracker = StartupTracker(0, true, 0)
+        val tracker = StartupTracker(0, { true }, 0)
         tracker.onActivityCreated("Main", false, true, 100)
         tracker.onFirstFrame("Main", 400)
         tracker.onActivityCreated("Detail", false, appInBackground = false, nowUptimeMs = 900)

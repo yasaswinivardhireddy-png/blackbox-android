@@ -254,3 +254,42 @@ io.github.yasaswini.blackbox.sample.Scenarios -> m6:
     324:327:void run(android.app.Activity,java.lang.String):36:36 -> a
     328:336:void run(android.app.Activity,java.lang.String):34:34 -> a
     337:342:void run(android.app.Activity,java.lang.String):37:37 -> a
+io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$1 -> v5:
+# {"id":"sourceFile","fileName":"Scenarios.kt"}
+    byte OrderFeed$startRacingCoroutines$1.$r8$classId -> d
+      # {"id":"com.android.tools.r8.synthesized"}
+    io.github.yasaswini.blackbox.sample.OrderFeed this$0 -> e
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Lk4;"}
+    7:16:void kotlin.coroutines.jvm.internal.ContinuationImpl.<init>(kotlin.coroutines.Continuation):103:103 -> <init>
+    7:16:void kotlin.coroutines.jvm.internal.SuspendLambda.<init>(int,kotlin.coroutines.Continuation):155 -> <init>
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lk4;Ls0;B)V"}
+    1:2:int kotlin.coroutines.jvm.internal.SuspendLambda.getArity():158:158 -> b
+    11:22:java.lang.Object io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$2.invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation):0:0 -> f
+    11:22:java.lang.Object io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$2.invoke(java.lang.Object,java.lang.Object):0 -> f
+    23:34:java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation):0:0 -> f
+    23:34:java.lang.Object invoke(java.lang.Object,java.lang.Object):0 -> f
+    8:14:kotlin.coroutines.Continuation io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$2.create(java.lang.Object,kotlin.coroutines.Continuation):0:0 -> h
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ls0;)Ls0;"}
+    15:22:kotlin.coroutines.Continuation create(java.lang.Object,kotlin.coroutines.Continuation):0:0 -> h
+    8:10:java.lang.Object io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$2.invokeSuspend(java.lang.Object):102:102 -> i
+    11:14:java.util.ArrayList io.github.yasaswini.blackbox.sample.OrderFeed.access$getOrders$p(io.github.yasaswini.blackbox.sample.OrderFeed):90:90 -> i
+    11:14:java.lang.Object io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$2.invokeSuspend(java.lang.Object):106 -> i
+    15:40:java.lang.Object io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$2.invokeSuspend(java.lang.Object):106:106 -> i
+    41:44:java.lang.Object kotlin.coroutines.intrinsics.IntrinsicsKt__IntrinsicsKt.getCOROUTINE_SUSPENDED():57:57 -> i
+    41:44:java.lang.Object invokeSuspend(java.lang.Object):0 -> i
+    45:50:java.lang.Object invokeSuspend(java.lang.Object):95:95 -> i
+    51:55:java.lang.Integer kotlin.coroutines.jvm.internal.Boxing.boxInt(int):32:32 -> i
+    51:55:java.lang.Object invokeSuspend(java.lang.Object):98 -> i
+    56:58:java.lang.Object invokeSuspend(java.lang.Object):98:98 -> i
+    59:72:java.lang.Object invokeSuspend(java.lang.Object):99:99 -> i
+    1:4:kotlin.coroutines.Continuation kotlin.coroutines.jvm.internal.BaseContinuationImpl.getCompletion():19:19 -> toString
+    1:4:java.lang.String kotlin.coroutines.jvm.internal.SuspendLambda.toString():164 -> toString
+    5:9:java.lang.String kotlin.jvm.internal.Reflection.renderLambdaToString(kotlin.jvm.internal.FunctionBase):84:84 -> toString
+    5:9:java.lang.String kotlin.coroutines.jvm.internal.SuspendLambda.toString():165 -> toString
+    10:24:java.lang.String kotlin.jvm.internal.ReflectionFactory.renderLambdaToString(kotlin.jvm.internal.FunctionBase):44:44 -> toString
+    10:24:java.lang.String kotlin.jvm.internal.Reflection.renderLambdaToString(kotlin.jvm.internal.FunctionBase):84 -> toString
+    10:24:java.lang.String kotlin.coroutines.jvm.internal.SuspendLambda.toString():165 -> toString
+    25:39:java.lang.String kotlin.jvm.internal.ReflectionFactory.renderLambdaToString(kotlin.jvm.internal.FunctionBase):45:45 -> toString
+    25:39:java.lang.String kotlin.jvm.internal.Reflection.renderLambdaToString(kotlin.jvm.internal.FunctionBase):84 -> toString
+    25:39:java.lang.String kotlin.coroutines.jvm.internal.SuspendLambda.toString():165 -> toString
+    40:44:java.lang.String kotlin.coroutines.jvm.internal.SuspendLambda.toString():167:167 -> toString

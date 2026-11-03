@@ -62,3 +62,9 @@ test('falls back to the method name when the line is unknown', () => {
   assert.equal(frame!.className, 'io.github.yasaswini.blackbox.sample.Scenarios');
   assert.match(frame!.method, /run/);
 });
+
+test('takes the source file of a merged lambda class from a sibling class', () => {
+  // R8 merged both coroutine lambdas of OrderFeed into v5; only $1 kept a source-file entry.
+  assert.deepEqual(show(mapping.frame(at('v5', 'i', 32))), ['io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$2.invokeSuspend(Scenarios.kt:106)']);
+  assert.deepEqual(show(mapping.frame(at('v5', 'i', 56))), ['io.github.yasaswini.blackbox.sample.OrderFeed$startRacingCoroutines$1.invokeSuspend(Scenarios.kt:98)']);
+});

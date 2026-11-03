@@ -142,7 +142,11 @@ export async function analyze(r: Envelope, ctx: AnalyzeContext): Promise<Analysi
       const chain: { type: string; message: string | null; frames: JavaFrame[] }[] = [];
       for (let e = p.exception; e && chain.length < 5; e = e.cause) {
         const type = view.type(String(e.type));
-        chain.push({ type, message: e.message ?? null, frames: view.frames(toJava(e.frames), type) });
+        // R8 can inline the exception's constructor into the throwing method; the JVM never shows
+        // those frames, so neither do we.
+        const retraced = view.frames(toJava(e.frames), type);
+        const own = retraced.findIndex((f) => !(f.method === '<init>' && f.className === type));
+        chain.push({ type, message: e.message ?? null, frames: own > 0 ? retraced.slice(own) : retraced });
       }
       if (chain.length === 0) return null;
       const frames = chain[0]!.frames;

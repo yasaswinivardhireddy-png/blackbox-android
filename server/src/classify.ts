@@ -69,6 +69,26 @@ export function classifyJvm(input: JvmInput): Classification {
     };
   }
 
+  // Data races often surface as a null element or a bad index instead of a
+  // ConcurrentModificationException: the reader sees the list mid-update.
+  if (!input.crashThread.main && appFrame && /NullPointerException|IndexOutOfBounds|NoSuchElement/.test(top.type)) {
+    const crashClass = outerClass(appFrame.className);
+    const concurrent = input.otherThreads.find((t) => t.frames.some((f) => input.isInApp(f) && outerClass(f.className) === crashClass));
+    if (concurrent) {
+      const concurrentFrame = concurrent.frames.find((f) => input.isInApp(f) && outerClass(f.className) === crashClass)!;
+      const mutating = concurrent.frames.slice(0, 8).some((f) => COLLECTIONS.test(f.className) || /^java\.util\.Arrays$/.test(f.className));
+      return {
+        category: 'Race condition',
+        confidence: mutating ? 'high' : 'medium',
+        explanation: `${simpleName(top.type)} on background thread "${input.crashThread.name}" in ${where}, while thread "${concurrent.name}" was running ${shortJava(concurrentFrame)} in the same class${mutating ? ' and modifying a collection' : ''}. Reading shared state during an unsynchronized write can return a null element or a stale size rather than throw ConcurrentModificationException. Guard the state with a lock, confine it to one thread, or use a concurrent collection.`,
+        evidence: [
+          `${simpleName(top.type)} on background thread "${input.crashThread.name}"`,
+          `Concurrent access from thread "${concurrent.name}" (${concurrent.state})${mutating ? ' inside a java.util collection' : ''}`,
+        ],
+      };
+    }
+  }
+
   if (/BadTokenException/.test(top.type) || (/IllegalStateException/.test(top.type) && /onSaveInstanceState|not attached to|FragmentManager/.test(message))) {
     return {
       category: 'Lifecycle misuse',

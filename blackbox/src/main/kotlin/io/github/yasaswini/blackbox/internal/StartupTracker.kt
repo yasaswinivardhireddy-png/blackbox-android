@@ -5,10 +5,11 @@ internal class StartupRecord(val type: String, val activity: String, val duratio
 /**
  * Measures time to first frame. A cold start runs from process start (as requested by the
  * system) to the first frame of the first Activity; a warm start runs from Activity creation.
+ * [launchedForActivity] is asked when the first Activity is created.
  */
 internal class StartupTracker(
     private val processStartUptimeMs: Long,
-    private val coldStartCandidate: Boolean,
+    private val launchedForActivity: () -> Boolean,
     private val sdkInitStartUptimeMs: Long,
 ) {
     private class Pending(val type: String, val activity: String, val startUptimeMs: Long)
@@ -20,7 +21,7 @@ internal class StartupTracker(
     fun onActivityCreated(activity: String, hasSavedState: Boolean, appInBackground: Boolean, nowUptimeMs: Long) {
         if (!firstActivitySeen) {
             firstActivitySeen = true
-            pending = if (coldStartCandidate && !hasSavedState) {
+            pending = if (launchedForActivity() && !hasSavedState) {
                 Pending("cold", activity, processStartUptimeMs)
             } else {
                 Pending("warm", activity, nowUptimeMs)

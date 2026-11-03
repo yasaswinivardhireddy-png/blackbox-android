@@ -60,8 +60,13 @@ internal class Core private constructor(
     val leakWatcher: LeakWatcher? =
         if (config.leakDetection) LeakWatcher(io, config.leakWatchDelayMs) { onLeak(it) } else null
 
-    private val coldStartCandidate: Boolean = phase("importance") { isForegroundLaunch() }
-    private val startup = StartupTracker(processStartUptimeMs(), coldStartCandidate, initStartUptimeMs)
+    // Asking ActivityManager whether this is a foreground launch is a Binder call that took ~35 ms
+    // on the main thread during cold starts (system_server is busy starting the app). Instead, a
+    // message is posted to the main thread during init: when the process was started to show an
+    // Activity, the system has already queued that Activity's launch, so it is created before
+    // the message runs. The importance query still runs, off the main thread, for the session report.
+    @Volatile private var firstPostRan = false
+    private val startup = StartupTracker(processStartUptimeMs(), { !firstPostRan }, initStartUptimeMs)
     private var watchdog: AnrWatchdog? = null
     private var jank: JankMonitor? = null
 
@@ -103,7 +108,7 @@ internal class Core private constructor(
             state.record(SessionRecord(sessionId, env.pid, sessionStartMs))
             state.save(stateFile)
             write(reports.create(ReportTypes.SESSION, sessionId, createdAtMs = sessionStartMs, includeContext = false) { w ->
-                w.name("coldStartCandidate").value(coldStartCandidate)
+                w.name("coldStartCandidate").value(isForegroundLaunch())
                 w.name("sdkInitMicros").value(initDurationMicros)
             })
             upload()
@@ -306,6 +311,7 @@ internal class Core private constructor(
                 val start = System.nanoTime()
                 val core = Core(app, config, SystemClock.uptimeMillis())
                 core.phase("install") { core.installOnMainThread() }
+                Handler(Looper.getMainLooper()).post { core.firstPostRan = true }
                 core.initDurationMicros = (System.nanoTime() - start) / 1_000
                 core.io.post { core.initInBackground() }
                 if (Log.isLoggable(TAG, Log.DEBUG)) {

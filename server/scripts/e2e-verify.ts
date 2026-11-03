@@ -57,6 +57,8 @@ while (result.rows.some((r) => !r.pass) && Date.now() < deadline) {
 const overview = await get<Record<string, unknown>>('/v1/overview');
 const passed = result.rows.filter((r) => r.pass).length;
 const native = result.issues.filter((i) => i.kind === 'native_crash');
+// Every scenario starts the app from a stopped process, so most launches must count as cold.
+const coldStarts = Number((overview.coldStartMs as { count?: number } | undefined)?.count ?? 0);
 const lines = [
   `### Emulator end-to-end: ${passed}/${result.rows.length} scenarios diagnosed correctly`,
   '',
@@ -65,6 +67,7 @@ const lines = [
   ...result.rows.map((r) => `| ${r.scenario} | ${r.pass ? 'PASS' : `FAIL ${r.note}`} | ${r.category} | \`${r.location.replace(/\|/g, '\\|')}\` | ${r.events} |`),
   '',
   `Native crash issues: ${native.length} (each crash is reported by the signal handler and by the Android tombstone, and must be counted once).`,
+  `Cold starts detected: ${coldStarts}.`,
   '',
   '```json',
   JSON.stringify(overview, null, 2),
@@ -78,4 +81,4 @@ if (values.out) {
   writeFileSync(join(values.out, 'e2e-summary.json'), `${JSON.stringify({ passed, total: result.rows.length, rows: result.rows, overview, issues: result.issues }, null, 2)}\n`);
 }
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${markdown}\n`);
-if (passed !== result.rows.length || native.length !== 2) process.exitCode = 1;
+if (passed !== result.rows.length || native.length !== 2 || coldStarts < 5) process.exitCode = 1;
