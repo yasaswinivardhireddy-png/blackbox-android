@@ -104,7 +104,7 @@ class DeviceDiagnosticsTest {
         val breadcrumbs = Breadcrumbs().apply { add("ui", "Tapped checkout") }
         val factory = ReportFactory(Environment.capture(app), breadcrumbs, { mapOf("cart" to "3 items") }, { true }, System.currentTimeMillis())
         val handedOver = CountDownLatch(1)
-        val handler = CrashHandler("test-session", factory, store, Thread.UncaughtExceptionHandler { _, _ -> handedOver.countDown() })
+        val handler = CrashHandler("test-session", lazyOf(factory), lazyOf(store), Thread.UncaughtExceptionHandler { _, _ -> handedOver.countDown() })
 
         handler.uncaughtException(Thread({}, "checkout-worker"), IllegalStateException("Cannot submit an empty cart", NullPointerException("cart")))
 
@@ -139,7 +139,7 @@ class DeviceDiagnosticsTest {
         val phases = Blackbox.initPhasesMicros
         Log.i("BlackboxTest", "Blackbox.init took $micros us on the main thread: $phases")
         assertTrue(Blackbox.isInitialized)
-        assertEquals(listOf("env", "store", "ioThread", "install"), phases.keys.toList())
+        assertEquals(listOf("construct", "install", "ioThread"), phases.keys.toList())
         // A cold, debuggable test process also pays for class loading and verification, so this
         // only catches gross regressions; scripts/e2e.sh measures the release app.
         assertTrue("init took $micros us", micros in 1..2_000_000)

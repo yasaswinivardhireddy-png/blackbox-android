@@ -11,10 +11,14 @@ import kotlin.system.exitProcess
  */
 internal class CrashHandler(
     private val sessionId: String,
-    private val reports: ReportFactory,
-    private val store: ReportStore,
+    reportsProvider: Lazy<ReportFactory>,
+    storeProvider: Lazy<ReportStore>,
     private val previous: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler(),
 ) : Thread.UncaughtExceptionHandler {
+    // Usually created by the SDK's background thread long before a crash; a crash during startup
+    // creates them here.
+    private val reports by reportsProvider
+    private val store by storeProvider
     private val handling = AtomicBoolean(false)
 
     fun install() {

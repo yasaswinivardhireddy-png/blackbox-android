@@ -14,11 +14,14 @@ import android.view.Window
  */
 @TargetApi(24)
 internal class JankMonitor(
-    private val handler: Handler,
+    handlerProvider: Lazy<Handler>,
     private val collectStats: Boolean,
     private val onVisit: (FrameStats, Long) -> Unit,
     private val onFirstFrame: (String, Long) -> Unit,
 ) {
+    // Created when the first Activity starts, so init never waits for the frame thread's Looper.
+    private val handler by handlerProvider
+
     private class Visit(val listener: Window.OnFrameMetricsAvailableListener, val stats: FrameStats, val startUptimeMs: Long)
 
     private val visits = HashMap<Activity, Visit>()

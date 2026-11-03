@@ -17,6 +17,7 @@ import android.util.Log
 import io.github.yasaswini.blackbox.BlackboxConfig
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ThreadLocalRandom
 
 /** Wires the recorders together. Created once by Blackbox.init on the app's main thread. */
@@ -43,22 +44,43 @@ internal class Core private constructor(
     private val sessionStartMs = System.currentTimeMillis()
     private val breadcrumbs = Breadcrumbs()
     private val customKeys = ConcurrentHashMap<String, String>()
-    private val root = File(app.filesDir, "blackbox")
-    private val nativeDir = File(root, "native")
-    private val stateFile = File(root, "state.txt")
-    private val env = phase("env") { Environment.capture(app) }
     private val mainThread: Thread = Looper.getMainLooper().thread
+
+    // Anything that touches the disk or calls a system service is created on first use, which is
+    // normally on the background thread. Under load, a PackageManager call took 31 ms and waiting
+    // for a new thread's Looper took up to 58 ms on the main thread of an emulator.
+    private val root by lazy { File(app.filesDir, "blackbox") }
+    private val nativeDir by lazy { File(root, "native") }
+    private val stateFile by lazy { File(root, "state.txt") }
+    private val env by lazy { Environment.capture(app) }
 
     @Volatile private var foreground = false
     private var startedActivities = 0 // Main thread only.
 
-    private val store = phase("store") { ReportStore(File(root, "reports"), config.maxStoredReports) }
-    private val reports = ReportFactory(env, breadcrumbs, { HashMap(customKeys) }, { foreground }, sessionStartMs)
-    private val io = phase("ioThread") { Handler(HandlerThread("blackbox-io", Process.THREAD_PRIORITY_BACKGROUND).apply { start() }.looper) }
-    private val uploader = Uploader(config.endpoint, config.apiKey, store) { SystemClock.uptimeMillis() }
+    private val storeLazy = lazy { ReportStore(File(root, "reports"), config.maxStoredReports) }
+    private val store by storeLazy
+    private val reportsLazy = lazy { ReportFactory(env, breadcrumbs, { HashMap(customKeys) }, { foreground }, sessionStartMs) }
+    private val reports by reportsLazy
+    private val uploader by lazy { Uploader(config.endpoint, config.apiKey, store) { SystemClock.uptimeMillis() } }
 
-    val leakWatcher: LeakWatcher? =
+    // The main thread starts this thread but never waits for it; the thread runs the background
+    // half of init itself once its Looper is ready.
+    private val mainInitDone = CountDownLatch(1)
+    private val ioThread = object : HandlerThread("blackbox-io", Process.THREAD_PRIORITY_BACKGROUND) {
+        override fun onLooperPrepared() {
+            try {
+                mainInitDone.await() // Everything init did on the main thread is visible after this.
+            } catch (_: InterruptedException) {
+                return
+            }
+            initInBackground()
+        }
+    }
+    private val io: Handler by lazy { Handler(ioThread.looper) }
+
+    val leakWatcher: LeakWatcher? by lazy {
         if (config.leakDetection) LeakWatcher(io, config.leakWatchDelayMs) { onLeak(it) } else null
+    }
 
     // Asking ActivityManager whether this is a foreground launch is a Binder call that took ~35 ms
     // on the main thread during cold starts (system_server is busy starting the app). Instead, a
@@ -76,7 +98,7 @@ internal class Core private constructor(
     val initPhasesMicros: Map<String, Long> get() = phases
 
     private fun installOnMainThread() {
-        CrashHandler(sessionId, reports, store).install()
+        CrashHandler(sessionId, reportsLazy, storeLazy).install()
         val callbacks = Callbacks()
         app.registerActivityLifecycleCallbacks(callbacks)
         app.registerComponentCallbacks(callbacks)
@@ -86,7 +108,7 @@ internal class Core private constructor(
         if (config.jankMonitoring && Build.VERSION.SDK_INT >= 24) {
             val frames = HandlerThread("blackbox-frames", Process.THREAD_PRIORITY_BACKGROUND).apply { start() }
             val sampled = ThreadLocalRandom.current().nextDouble() < config.jankSampleRate
-            jank = JankMonitor(Handler(frames.looper), sampled, { stats, visitMs -> onScreenVisit(stats, visitMs) }, { screen, end -> onFirstFrame(screen, end) })
+            jank = JankMonitor(lazy { Handler(frames.looper) }, sampled, { stats, visitMs -> onScreenVisit(stats, visitMs) }, { screen, end -> onFirstFrame(screen, end) })
         }
         breadcrumb("app", "session started")
     }
@@ -310,10 +332,12 @@ internal class Core private constructor(
             try {
                 val start = System.nanoTime()
                 val core = Core(app, config, SystemClock.uptimeMillis())
+                core.phases["construct"] = (System.nanoTime() - start) / 1_000
                 core.phase("install") { core.installOnMainThread() }
                 Handler(Looper.getMainLooper()).post { core.firstPostRan = true }
+                core.phase("ioThread") { core.ioThread.start() }
                 core.initDurationMicros = (System.nanoTime() - start) / 1_000
-                core.io.post { core.initInBackground() }
+                core.mainInitDone.countDown()
                 if (Log.isLoggable(TAG, Log.DEBUG)) {
                     Log.d(TAG, "init took ${core.initDurationMicros} us on the main thread: ${core.phases.entries.joinToString { "${it.key} ${it.value} us" }}")
                 }
